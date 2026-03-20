@@ -1,0 +1,786 @@
+/* ============================================================
+   NLM — PREMIUM INDUSTRIAL CYBER-BRUTALISM
+   INSTALLER PAGE OVERRIDES
+   "The Clockwork Terminal"
+   ============================================================ */
+
+/* ── TOP-LEVEL VARIABLES ─────────────────────────────────── */
+:root {
+  --nlm-bg:       #000000;
+  --nlm-surface:  #0a0a0a;
+  --nlm-charcoal: #12100e;
+  --nlm-border:   #262421;
+  --nlm-bone:     #E3D5CA;
+  --nlm-dust:     #5e5a56;
+  --nlm-gold:     #D4A373;
+  --nlm-gold-dim: rgba(212,163,115,0.12);
+  --nlm-font-mono: 'GeistMono', 'JetBrains Mono', 'Cascadia Code',
+                   'Fira Code', 'Courier New', monospace;
+  --nlm-font-sans: 'Geist', 'Inter', 'Helvetica Neue', sans-serif;
+}
+
+/* ── SCANLINES KEYFRAME ──────────────────────────────────── */
+@keyframes nlm-scan {
+  0%   { background-position: 0 0; }
+  100% { background-position: 0 100px; }
+}
+@keyframes nlm-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes nlm-pulse-gold {
+  0%   { box-shadow: 0 0 0 0 rgba(212,163,115,0.35); }
+  70%  { box-shadow: 0 0 0 8px rgba(212,163,115,0); }
+  100% { box-shadow: 0 0 0 0 rgba(212,163,115,0); }
+}
+@keyframes nlm-reveal {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes nlm-boot-bar {
+  from { width: 0%; }
+  to   { width: 100%; }
+}
+@keyframes nlm-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.6; }
+}
+
+/* ── BODY RESET FOR INSTALLER ────────────────────────────── */
+body.fi-body:has(.nlm-installer-root) {
+  background: var(--nlm-bg) !important;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ── SCANLINES OVERLAY ───────────────────────────────────── */
+.nlm-scanlines {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0,0,0,0.22) 2px,
+    rgba(0,0,0,0.22) 4px
+  );
+  animation: nlm-scan 4s linear infinite;
+  mix-blend-mode: overlay;
+}
+
+/* ── GRID DOT BACKGROUND ─────────────────────────────────── */
+.nlm-grid-bg {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(212,163,115,0.06) 0%, transparent 70%),
+    radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px;
+}
+
+/* ── ROOT INSTALLER WRAPPER ──────────────────────────────── */
+.nlm-installer-root {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 38% 62%;
+  grid-template-rows: auto;
+}
+
+/* ── LEFT PANEL — BRAND ──────────────────────────────────── */
+.nlm-brand {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem;
+  border-right: 1px solid var(--nlm-border);
+  background: var(--nlm-charcoal);
+  overflow: hidden;
+}
+
+/* Corner accent */
+.nlm-brand::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 200px;
+  height: 200px;
+  border-top: 1px solid var(--nlm-border);
+  border-left: 1px solid var(--nlm-border);
+  border-radius: 100% 0 0 0;
+  opacity: 0.5;
+}
+
+/* Vertical timeline line */
+.nlm-brand::after {
+  content: '';
+  position: absolute;
+  left: 4.5rem;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--nlm-border) 10%,
+    var(--nlm-border) 90%,
+    transparent 100%
+  );
+}
+
+.nlm-brand-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--nlm-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--nlm-dust);
+  position: relative;
+  z-index: 1;
+}
+
+.nlm-badge {
+  color: var(--nlm-gold);
+  border: 1px solid var(--nlm-gold-dim);
+  background: rgba(212,163,115,0.06);
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+
+/* Boot progress bar */
+.nlm-boot-bar {
+  margin-top: 1.5rem;
+  height: 2px;
+  background: var(--nlm-border);
+  border-radius: 1px;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.nlm-boot-bar-fill {
+  height: 100%;
+  background: var(--nlm-gold);
+  animation: nlm-boot-bar 2.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s both;
+}
+
+/* Main brand block */
+.nlm-brand-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.nlm-brand-eyebrow {
+  font-family: var(--nlm-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--nlm-gold);
+  margin-bottom: 1.2rem;
+  animation: nlm-reveal 0.6s ease 0.4s both;
+}
+
+.nlm-brand-title {
+  font-family: var(--nlm-font-sans);
+  font-size: clamp(4rem, 8vw, 6rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--nlm-bone);
+  margin: 0 0 2rem;
+  animation: nlm-flicker 0.6s ease 0.8s both, nlm-reveal 0.8s ease 0.2s both;
+}
+
+.nlm-brand-rule {
+  display: block;
+  width: 4rem;
+  height: 2px;
+  background: var(--nlm-gold);
+  margin-bottom: 1.5rem;
+  animation: nlm-reveal 0.6s ease 0.9s both;
+}
+
+.nlm-brand-sub {
+  font-family: var(--nlm-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nlm-dust);
+  line-height: 1.8;
+  animation: nlm-reveal 0.6s ease 1s both;
+}
+
+/* Meta table */
+.nlm-brand-meta {
+  display: grid;
+  gap: 0;
+  border: 1px solid var(--nlm-border);
+  position: relative;
+  z-index: 1;
+  animation: nlm-reveal 0.6s ease 1.2s both;
+}
+.nlm-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--nlm-border);
+  font-family: var(--nlm-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.nlm-meta-row:last-child { border-bottom: 0; }
+.nlm-meta-key { color: var(--nlm-dust); }
+.nlm-meta-val { color: var(--nlm-bone); }
+.nlm-meta-val--active {
+  color: var(--nlm-gold);
+  animation: nlm-pulse-gold 2s ease infinite;
+  padding: 2px 8px;
+  border: 1px solid var(--nlm-gold-dim);
+  border-radius: 2px;
+}
+
+/* ── RIGHT PANEL — FORM ──────────────────────────────────── */
+.nlm-main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--nlm-bg);
+  animation: nlm-reveal 0.5s ease 0.1s both;
+}
+
+/* Terminal header bar */
+.nlm-terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 2.5rem;
+  border-bottom: 1px solid var(--nlm-border);
+  background: var(--nlm-charcoal);
+  font-family: var(--nlm-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.nlm-terminal-dots {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.nlm-terminal-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid;
+}
+.nlm-terminal-dot:nth-child(1) { border-color: #ff5f57; background: #ff5f5744; }
+.nlm-terminal-dot:nth-child(2) { border-color: #febc2e; background: #febc2e44; }
+.nlm-terminal-dot:nth-child(3) { border-color: #28c840; background: #28c84044; }
+
+.nlm-terminal-path {
+  color: var(--nlm-gold);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nlm-terminal-path span { color: var(--nlm-dust); }
+
+.nlm-terminal-status {
+  color: var(--nlm-dust);
+  flex-shrink: 0;
+  font-size: 10px;
+}
+
+/* Form content wrapper */
+.nlm-form-content {
+  flex: 1;
+  padding: 2.5rem;
+  overflow-y: auto;
+}
+
+/* ── FILAMENT OVERRIDES — GENERAL ────────────────────────── */
+.nlm-installer-root .fi-simple-page,
+.nlm-installer-root form {
+  all: unset;
+  display: block;
+}
+
+/* Kill Filament's SimplePage card bg */
+.nlm-form-content .fi-simple-page,
+.nlm-form-content .fi-simple-page-content {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* ── WIZARD HEADER — STEP TABS ───────────────────────────── */
+.nlm-form-content .fi-sc-wizard {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  gap: 0 !important;
+}
+
+.nlm-form-content .fi-sc-wizard-header {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  border: 1px solid var(--nlm-border);
+  background: var(--nlm-charcoal);
+}
+
+.nlm-form-content .fi-sc-wizard-header-step {
+  position: relative;
+  flex: 1 1 auto;
+  display: flex;
+  align-items: stretch;
+  border-right: 1px solid var(--nlm-border);
+}
+.nlm-form-content .fi-sc-wizard-header-step:last-child {
+  border-right: 0;
+}
+
+.nlm-form-content .fi-sc-wizard-header-step-separator {
+  display: none !important;
+}
+
+.nlm-form-content .fi-sc-wizard-header-step-btn {
+  all: unset;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+  padding: 0.75rem 0.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.2s;
+}
+.nlm-form-content .fi-sc-wizard-header-step-btn::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: transparent;
+  transition: background 0.25s;
+}
+
+/* Active step highlight */
+.nlm-form-content .fi-sc-wizard-header-step.fi-active .fi-sc-wizard-header-step-btn::before {
+  background: var(--nlm-gold);
+}
+.nlm-form-content .fi-sc-wizard-header-step.fi-active .fi-sc-wizard-header-step-btn {
+  background: var(--nlm-gold-dim) !important;
+}
+
+/* Completed step */
+.nlm-form-content .fi-sc-wizard-header-step.fi-completed .fi-sc-wizard-header-step-btn {
+  background: rgba(212,163,115,0.04) !important;
+}
+.nlm-form-content .fi-sc-wizard-header-step.fi-completed .fi-sc-wizard-header-step-number,
+.nlm-form-content .fi-sc-wizard-header-step.fi-completed .fi-sc-wizard-header-step-label {
+  color: var(--nlm-gold) !important;
+  opacity: 0.6;
+}
+
+.nlm-form-content .fi-sc-wizard-header-step-icon-ctn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nlm-form-content .fi-sc-wizard-header-step-icon-ctn svg {
+  width: 14px; height: 14px;
+  color: var(--nlm-gold) !important;
+  stroke: var(--nlm-gold) !important;
+}
+
+.nlm-form-content .fi-sc-wizard-header-step-number {
+  font-family: var(--nlm-font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--nlm-dust);
+  line-height: 1;
+}
+.nlm-form-content .fi-sc-wizard-header-step.fi-active .fi-sc-wizard-header-step-number {
+  color: var(--nlm-gold) !important;
+}
+
+.nlm-form-content .fi-sc-wizard-header-step-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.nlm-form-content .fi-sc-wizard-header-step-label {
+  font-family: var(--nlm-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--nlm-dust);
+  text-align: center;
+  line-height: 1.2;
+}
+.nlm-form-content .fi-sc-wizard-header-step.fi-active .fi-sc-wizard-header-step-label {
+  color: var(--nlm-gold) !important;
+}
+.nlm-form-content .fi-sc-wizard-header-step-description {
+  display: none;
+}
+
+/* ── WIZARD STEP CONTENT PANEL ───────────────────────────── */
+.nlm-form-content .fi-sc-wizard > div:not(.fi-sc-wizard-header) {
+  background: transparent !important;
+}
+
+/* Step panels */
+.nlm-form-content [x-show] .fi-sc-wizard-step {
+  padding: 0 !important;
+}
+
+/* ── SECTIONS / CARDS ────────────────────────────────────── */
+.nlm-form-content .fi-section {
+  background: var(--nlm-surface) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 0 0 2rem !important;
+  overflow: hidden;
+}
+
+.nlm-form-content .fi-section-header {
+  background: var(--nlm-charcoal) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+  padding: 0.75rem 1.25rem !important;
+}
+
+.nlm-form-content .fi-section-header-heading {
+  font-family: var(--nlm-font-mono) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.18em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-gold) !important;
+}
+
+.nlm-form-content .fi-section-content {
+  padding: 1.5rem !important;
+  background: transparent !important;
+}
+
+/* ── FORM FIELDS ─────────────────────────────────────────── */
+.nlm-form-content .fi-fo-field-wrp {
+  margin-bottom: 0 !important;
+}
+
+/* Labels */
+.nlm-form-content .fi-fo-label,
+.nlm-form-content .fi-fo-label label,
+.nlm-form-content label.fi-fo-label,
+.nlm-form-content label {
+  font-family: var(--nlm-font-mono) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.22em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+  margin-bottom: 0.35rem !important;
+}
+
+/* Inputs */
+.nlm-form-content input[type="text"],
+.nlm-form-content input[type="email"],
+.nlm-form-content input[type="password"],
+.nlm-form-content input[type="url"],
+.nlm-form-content input[type="number"],
+.nlm-form-content .fi-input,
+.nlm-form-content .fi-input-wrp input {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-font-mono) !important;
+  font-size: 13px !important;
+  letter-spacing: 0.04em !important;
+  padding: 0.65rem 1rem !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+  outline: none !important;
+  box-shadow: none !important;
+  caret-color: var(--nlm-gold) !important;
+}
+.nlm-form-content input:focus,
+.nlm-form-content .fi-input:focus {
+  border-color: var(--nlm-gold) !important;
+  box-shadow: inset 0 0 0 1px var(--nlm-gold-dim) !important;
+}
+.nlm-form-content input::placeholder { color: var(--nlm-dust) !important; opacity: 0.6; }
+
+/* Input wrapper */
+.nlm-form-content .fi-input-wrp {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Select dropdowns */
+.nlm-form-content select,
+.nlm-form-content .fi-select-input {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-font-mono) !important;
+  font-size: 13px !important;
+  letter-spacing: 0.04em !important;
+  outline: none !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+.nlm-form-content select:focus,
+.nlm-form-content .fi-select-input:focus {
+  border-color: var(--nlm-gold) !important;
+}
+
+/* Checkboxes */
+.nlm-form-content input[type="checkbox"] {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  border: 1px solid var(--nlm-border) !important;
+  background: var(--nlm-charcoal) !important;
+  cursor: pointer !important;
+  border-radius: 0 !important;
+  accent-color: var(--nlm-gold);
+  flex-shrink: 0;
+}
+.nlm-form-content input[type="checkbox"]:checked {
+  background: var(--nlm-gold-dim) !important;
+  border-color: var(--nlm-gold) !important;
+}
+
+/* Toggle switches */
+.nlm-form-content .fi-toggle-btn {
+  background: var(--nlm-border) !important;
+  border-radius: 0 !important;
+}
+.nlm-form-content .fi-toggle-btn[aria-checked="true"] {
+  background: var(--nlm-gold-dim) !important;
+  border-color: var(--nlm-gold) !important;
+}
+
+/* ── SELECT COMPONENT (Filament custom select) ───────────── */
+.nlm-form-content .fi-slt-input {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-font-mono) !important;
+  font-size: 13px !important;
+}
+.nlm-form-content .fi-slt-options {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 var(--nlm-border) !important;
+}
+.nlm-form-content .fi-slt-option {
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-font-mono) !important;
+  font-size: 12px !important;
+}
+.nlm-form-content .fi-slt-option[aria-selected="true"],
+.nlm-form-content .fi-slt-option:focus {
+  background: var(--nlm-gold-dim) !important;
+  color: var(--nlm-gold) !important;
+}
+
+/* ── HELPER TEXT + ERRORS ────────────────────────────────── */
+.nlm-form-content .fi-fo-helper-text p,
+.nlm-form-content .fi-fo-helper-text {
+  font-family: var(--nlm-font-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.08em !important;
+  color: var(--nlm-dust) !important;
+}
+.nlm-form-content .fi-fo-field-wrp-error-message,
+.nlm-form-content .fi-fo-field-wrp-error-message p {
+  font-family: var(--nlm-font-mono) !important;
+  font-size: 10px !important;
+  color: #ff6b6b !important;
+  letter-spacing: 0.08em !important;
+}
+
+/* ── REQUIREMENTS STEP — STATUS ENTRIES ──────────────────── */
+.nlm-form-content .fi-placeholder {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-font-mono) !important;
+  font-size: 12px !important;
+}
+
+/* ── BUTTONS — NEXT / PREVIOUS ───────────────────────────── */
+.nlm-form-content .fi-sc-wizard-footer,
+.nlm-form-content [class*="wizard-actions"],
+.nlm-form-content .fi-wizard-footer {
+  padding: 1.5rem 0 0 !important;
+  border-top: 1px solid var(--nlm-border) !important;
+  margin-top: 1.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.nlm-form-content .fi-btn,
+.nlm-form-content button[type="submit"],
+.nlm-form-content button[type="button"].fi-btn {
+  all: unset;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  font-family: var(--nlm-font-mono) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  padding: 0.7rem 1.4rem !important;
+  border: 1px solid var(--nlm-border) !important;
+  background: var(--nlm-charcoal) !important;
+  color: var(--nlm-bone) !important;
+  cursor: pointer !important;
+  border-radius: 0 !important;
+  transition: all 0.2s !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+.nlm-form-content .fi-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--nlm-gold-dim);
+  transform: translateX(-101%);
+  transition: transform 0.3s ease;
+}
+.nlm-form-content .fi-btn:hover::after { transform: translateX(0); }
+.nlm-form-content .fi-btn:hover {
+  border-color: var(--nlm-gold) !important;
+  color: var(--nlm-gold) !important;
+}
+.nlm-form-content .fi-btn:disabled,
+.nlm-form-content .fi-btn[disabled] {
+  opacity: 0.35 !important;
+  cursor: not-allowed !important;
+}
+
+/* Primary (submit/next) button */
+.nlm-form-content .fi-btn-color-primary,
+.nlm-form-content button[type="submit"] {
+  border-color: var(--nlm-gold) !important;
+  color: var(--nlm-gold) !important;
+  background: rgba(212,163,115,0.06) !important;
+}
+
+/* ── NOTIFICATIONS ───────────────────────────────────────── */
+.nlm-form-content .fi-no-notification {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  border-left: 3px solid var(--nlm-gold) !important;
+  font-family: var(--nlm-font-mono) !important;
+}
+.nlm-form-content .fi-no-notification .fi-no-notification-title {
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-font-mono) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  font-size: 12px !important;
+}
+
+/* ── ICON COLORS ─────────────────────────────────────────── */
+.nlm-form-content [class*="fi-icon"],
+.nlm-form-content .fi-prefix-icon,
+.nlm-form-content .fi-suffix-icon {
+  color: var(--nlm-dust) !important;
+}
+
+/* ── GRID / LAYOUT OVERRIDES ─────────────────────────────── */
+.nlm-form-content .fi-grid,
+.nlm-form-content .fi-grid-cols-4 {
+  gap: 0.75rem !important;
+}
+
+/* Language selector alignment */
+.nlm-form-content .fi-grid-col-start-4 {
+  padding-bottom: 1rem !important;
+}
+
+/* ── LOADING INDICATOR (wire:loading) ────────────────────── */
+.nlm-form-content .fi-loading-indicator {
+  color: var(--nlm-gold) !important;
+}
+
+/* ── MODAL OVERRIDES ─────────────────────────────────────── */
+.fi-modal-window {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 0 0 2rem !important;
+  box-shadow: 8px 8px 0 rgba(212,163,115,0.1) !important;
+}
+
+/* ── NLM CURSOR BLINK ────────────────────────────────────── */
+.nlm-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 13px;
+  background: var(--nlm-gold);
+  animation: nlm-blink 1s step-start infinite;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .nlm-installer-root {
+    grid-template-columns: 1fr;
+  }
+  .nlm-brand {
+    position: relative;
+    height: auto;
+    min-height: 0;
+    padding: 1.5rem;
+  }
+  .nlm-brand::after { display: none; }
+}
