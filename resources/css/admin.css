@@ -1,0 +1,1018 @@
+/* ============================================================
+   NLM ADMIN — PREMIUM INDUSTRIAL CYBER-BRUTALISM
+   "The Clockwork Terminal" — Admin Panel Theme
+   ALL RULES SCOPED TO body.fi-panel-admin
+   ============================================================ */
+
+/* ── GLOBAL VARS ─────────────────────────────────────────── */
+:root {
+  --nlm-bg:        #000000;
+  --nlm-surface:   #0a0a0a;
+  --nlm-charcoal:  #12100e;
+  --nlm-border:    #262421;
+  --nlm-bone:      #E3D5CA;
+  --nlm-dust:      #5e5a56;
+  --nlm-gold:      #D4A373;
+  --nlm-gold-dim:  rgba(212, 163, 115, 0.12);
+  --nlm-gold-glow: rgba(212, 163, 115, 0.25);
+  --nlm-red:       #ff4444;
+  --nlm-mono: 'GeistMono', 'JetBrains Mono', 'Cascadia Code',
+              'Fira Code', 'Courier New', monospace;
+  --nlm-sans: 'Geist', 'Inter', 'Helvetica Neue', sans-serif;
+}
+
+/* ── KEYFRAMES ───────────────────────────────────────────── */
+@keyframes nlm-fade-up   { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+@keyframes nlm-flicker   { 0%,19%,21%,23%,25%,54%,56%,100% { opacity:1 } 20%,24%,55% { opacity:.55 } }
+@keyframes nlm-blink     { 0%,49% { opacity:1 } 50%,100% { opacity:0 } }
+@keyframes nlm-pulse-g   { 0% { box-shadow:0 0 0 0 rgba(212,163,115,.35) } 70% { box-shadow:0 0 0 8px rgba(212,163,115,0) } 100% { box-shadow:0 0 0 0 rgba(212,163,115,0) } }
+@keyframes nlm-scan      { 0% { background-position:0 0 } 100% { background-position:0 100px } }
+@keyframes nlm-boot-bar  { from { width:0 } to { width:100% } }
+@keyframes nlm-spin      { to { transform:rotate(360deg) } }
+@keyframes nlm-marquee   { from { transform:translateX(0) } to { transform:translateX(-50%) } }
+
+/* ── FORCE DARK MODE ─────────────────────────────────────── */
+html.fi:not(.dark) { color-scheme: dark; }
+
+/* ── BODY / ROOT ─────────────────────────────────────────── */
+body.fi-panel-admin,
+body.fi-panel-admin.fi-body {
+  background: var(--nlm-bg) !important;
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-sans) !important;
+}
+
+
+
+/* ── SCANLINES ───────────────────────────────────────────── */
+#nlm-scanlines {
+  pointer-events: none;
+  position: fixed; inset: 0;
+  z-index: 9990;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px, transparent 2px,
+    rgba(0,0,0,.18) 2px, rgba(0,0,0,.18) 4px
+  );
+  animation: nlm-scan 5s linear infinite;
+  mix-blend-mode: overlay;
+}
+
+/* ── BOOT OVERLAY ────────────────────────────────────────── */
+#nlm-boot {
+  position: fixed; inset: 0;
+  z-index: 99998;
+  background: var(--nlm-bg);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 1rem;
+  transition: opacity .4s ease;
+}
+#nlm-boot .nlm-boot-title {
+  font-family: var(--nlm-mono);
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--nlm-gold);
+}
+#nlm-boot .nlm-boot-bar-wrap {
+  width: 240px; height: 2px;
+  background: var(--nlm-border);
+}
+#nlm-boot .nlm-boot-bar-fill {
+  height: 100%;
+  background: var(--nlm-gold);
+  animation: nlm-boot-bar 1s cubic-bezier(.4,0,.2,1) both;
+}
+#nlm-boot .nlm-boot-sub {
+  font-family: var(--nlm-mono);
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--nlm-dust);
+}
+
+/* ── SIDEBAR ─────────────────────────────────────────────── */
+body.fi-panel-admin .fi-sidebar {
+  background: var(--nlm-charcoal) !important;
+  border-right: 1px solid var(--nlm-border) !important;
+  box-shadow: none !important;
+}
+
+/* Sidebar header (logo area) */
+body.fi-panel-admin .fi-sidebar-header,
+body.fi-panel-admin .fi-sidebar-header-ctn {
+  background: var(--nlm-charcoal) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+  padding: 1rem 1.25rem !important;
+}
+
+/* Brand name */
+body.fi-panel-admin .fi-sidebar-header .fi-brand-name,
+body.fi-panel-admin [class*="BrandName"],
+body.fi-panel-admin .fi-sidebar-header span {
+  font-family: var(--nlm-mono) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: .16em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-gold) !important;
+}
+
+/* Sidebar nav groups */
+body.fi-panel-admin .fi-sidebar-group-label {
+  font-family: var(--nlm-mono) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .22em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+  padding: .75rem 1.25rem .35rem !important;
+}
+
+/* Sidebar nav item */
+body.fi-panel-admin .fi-sidebar-item-btn {
+  border-radius: 0 !important;
+  padding: .55rem 1.25rem !important;
+  margin: 0 !important;
+  transition: background .15s, color .15s !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+body.fi-panel-admin .fi-sidebar-item-btn::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: transparent;
+  transition: background .2s;
+}
+body.fi-panel-admin .fi-sidebar-item-btn:hover::before,
+body.fi-panel-admin .fi-sidebar-item-btn.fi-active::before {
+  background: var(--nlm-gold);
+}
+body.fi-panel-admin .fi-sidebar-item-btn:hover,
+body.fi-panel-admin .fi-sidebar-item-btn.fi-active {
+  background: var(--nlm-gold-dim) !important;
+}
+
+/* Sidebar item label */
+body.fi-panel-admin .fi-sidebar-item-label {
+  font-family: var(--nlm-mono) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: .1em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+  transition: color .15s !important;
+}
+body.fi-panel-admin .fi-sidebar-item-btn:hover .fi-sidebar-item-label,
+body.fi-panel-admin .fi-sidebar-item-btn.fi-active .fi-sidebar-item-label {
+  color: var(--nlm-gold) !important;
+}
+
+/* Sidebar icons */
+body.fi-panel-admin .fi-sidebar-item-btn svg {
+  color: var(--nlm-dust) !important;
+  transition: color .15s !important;
+}
+body.fi-panel-admin .fi-sidebar-item-btn:hover svg,
+body.fi-panel-admin .fi-sidebar-item-btn.fi-active svg {
+  color: var(--nlm-gold) !important;
+}
+
+/* Sidebar footer */
+body.fi-panel-admin .fi-sidebar-footer {
+  border-top: 1px solid var(--nlm-border) !important;
+  background: var(--nlm-charcoal) !important;
+  padding: .75rem 1.25rem !important;
+}
+
+/* ── TOPBAR ──────────────────────────────────────────────── */
+body.fi-panel-admin .fi-topbar,
+body.fi-panel-admin .fi-topbar-ctn {
+  background: var(--nlm-charcoal) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+body.fi-panel-admin .fi-topbar-item-label {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+}
+body.fi-panel-admin .fi-topbar-item-btn:hover .fi-topbar-item-label { color: var(--nlm-gold) !important; }
+
+/* ── MAIN CONTENT CONTAINER ──────────────────────────────── */
+body.fi-panel-admin .fi-main-ctn {
+  background: var(--nlm-bg) !important;
+}
+body.fi-panel-admin .fi-main {
+  background: var(--nlm-bg) !important;
+}
+
+/* ── PAGE HEADER ─────────────────────────────────────────── */
+body.fi-panel-admin .fi-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+  padding: 1.5rem 2rem !important;
+  position: relative !important;
+}
+body.fi-panel-admin .fi-header::before {
+  content: '// ADMIN_CONSOLE';
+  position: absolute;
+  top: 1rem; right: 2rem;
+  font-family: var(--nlm-mono);
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--nlm-border);
+}
+
+body.fi-panel-admin .fi-header-heading,
+body.fi-panel-admin .fi-page-heading {
+  font-family: var(--nlm-sans) !important;
+  font-size: clamp(1.5rem, 3vw, 2.25rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: -.03em !important;
+  text-transform: uppercase !important;
+  line-height: 1 !important;
+  color: var(--nlm-bone) !important;
+}
+
+body.fi-panel-admin .fi-header-subheading {
+  font-family: var(--nlm-mono) !important;
+  font-size: 11px !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+  margin-top: .35rem !important;
+}
+
+/* ── BREADCRUMBS ─────────────────────────────────────────── */
+body.fi-panel-admin .fi-breadcrumbs ol {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+}
+body.fi-panel-admin .fi-breadcrumbs li a,
+body.fi-panel-admin .fi-breadcrumbs li span {
+  color: var(--nlm-dust) !important;
+}
+body.fi-panel-admin .fi-breadcrumbs li:last-child span {
+  color: var(--nlm-gold) !important;
+}
+
+/* ── SECTIONS / CARDS ────────────────────────────────────── */
+body.fi-panel-admin .fi-section {
+  background: var(--nlm-surface) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 0 0 2rem !important;
+  box-shadow: none !important;
+  animation: nlm-fade-up .4s ease both;
+}
+
+body.fi-panel-admin .fi-section-header {
+  background: var(--nlm-charcoal) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+  padding: .75rem 1.25rem !important;
+}
+
+body.fi-panel-admin .fi-section-header-heading {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-gold) !important;
+}
+
+body.fi-panel-admin .fi-section-header-description {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  color: var(--nlm-dust) !important;
+  letter-spacing: .08em !important;
+}
+
+body.fi-panel-admin .fi-section-content,
+body.fi-panel-admin .fi-section-content-ctn {
+  background: transparent !important;
+}
+
+/* ── TABLES ──────────────────────────────────────────────── */
+body.fi-panel-admin .fi-ta-ctn {
+  background: var(--nlm-surface) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 0 0 2rem !important;
+  box-shadow: none !important;
+  overflow: hidden;
+}
+
+body.fi-panel-admin .fi-ta-header {
+  background: var(--nlm-charcoal) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+  padding: .75rem 1.25rem !important;
+}
+
+body.fi-panel-admin .fi-ta-header-heading {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-gold) !important;
+}
+
+body.fi-panel-admin .fi-ta-table {
+  background: transparent !important;
+  border-collapse: collapse !important;
+  width: 100% !important;
+}
+
+/* Table header row */
+body.fi-panel-admin .fi-ta-header-cell {
+  background: var(--nlm-charcoal) !important;
+  border-bottom: 2px solid var(--nlm-border) !important;
+  padding: .65rem 1rem !important;
+}
+body.fi-panel-admin .fi-ta-header-cell-sort-btn,
+body.fi-panel-admin .fi-ta-header-cell span {
+  font-family: var(--nlm-mono) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .18em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+}
+body.fi-panel-admin .fi-ta-header-cell-sorted .fi-ta-header-cell-sort-btn,
+body.fi-panel-admin .fi-ta-header-cell-sorted span {
+  color: var(--nlm-gold) !important;
+}
+
+/* Table rows */
+body.fi-panel-admin .fi-ta-row {
+  border-bottom: 1px solid var(--nlm-border) !important;
+  transition: background .12s !important;
+}
+body.fi-panel-admin .fi-ta-row:hover {
+  background: var(--nlm-gold-dim) !important;
+}
+body.fi-panel-admin .fi-ta-row:last-child { border-bottom: 0 !important; }
+
+body.fi-panel-admin .fi-ta-cell {
+  background: transparent !important;
+  padding: .65rem 1rem !important;
+  border: none !important;
+}
+
+body.fi-panel-admin .fi-ta-text,
+body.fi-panel-admin .fi-ta-cell [class*="text"] {
+  font-family: var(--nlm-sans) !important;
+  font-size: 13px !important;
+  color: var(--nlm-bone) !important;
+}
+
+body.fi-panel-admin .fi-ta-text-description {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  color: var(--nlm-dust) !important;
+  letter-spacing: .06em !important;
+}
+
+/* Table footer / pagination */
+body.fi-panel-admin .fi-ta-content-ctn + *,
+body.fi-panel-admin nav[aria-label] {
+  background: var(--nlm-charcoal) !important;
+  border-top: 1px solid var(--nlm-border) !important;
+}
+
+/* Table empty state */
+body.fi-panel-admin .fi-ta-empty-state {
+  padding: 3rem !important;
+  background: transparent !important;
+}
+body.fi-panel-admin .fi-ta-empty-state-heading {
+  font-family: var(--nlm-mono) !important;
+  font-size: 11px !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+}
+body.fi-panel-admin .fi-ta-empty-state-description {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  color: var(--nlm-border) !important;
+  letter-spacing: .08em !important;
+}
+body.fi-panel-admin .fi-ta-empty-state-icon-bg {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+}
+
+/* Table filter/search bar */
+body.fi-panel-admin .fi-ta-filters,
+body.fi-panel-admin .fi-ta-header-toolbar {
+  background: var(--nlm-surface) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+  padding: .5rem 1rem !important;
+}
+
+/* ── BUTTONS ─────────────────────────────────────────────── */
+body.fi-panel-admin .fi-btn {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: .18em !important;
+  text-transform: uppercase !important;
+  border-radius: 0 !important;
+  border: 1px solid var(--nlm-border) !important;
+  background: var(--nlm-charcoal) !important;
+  color: var(--nlm-bone) !important;
+  box-shadow: none !important;
+  transition: border-color .2s, color .2s, background .2s !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+body.fi-panel-admin .fi-btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--nlm-gold-dim);
+  transform: translateX(-101%);
+  transition: transform .3s ease;
+  pointer-events: none;
+}
+body.fi-panel-admin .fi-btn:hover::after { transform: translateX(0); }
+body.fi-panel-admin .fi-btn:hover {
+  border-color: var(--nlm-gold) !important;
+  color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-btn:hover svg { color: var(--nlm-gold) !important; }
+
+/* Primary button */
+body.fi-panel-admin .fi-btn-color-primary,
+body.fi-panel-admin .fi-btn.fi-color-primary {
+  background: rgba(212,163,115,.08) !important;
+  border-color: var(--nlm-gold) !important;
+  color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-btn-color-primary:hover {
+  background: rgba(212,163,115,.18) !important;
+}
+
+/* Danger button */
+body.fi-panel-admin .fi-btn-color-danger,
+body.fi-panel-admin .fi-btn.fi-color-danger {
+  background: rgba(255,68,68,.08) !important;
+  border-color: rgba(255,68,68,.4) !important;
+  color: #ff6b6b !important;
+}
+
+/* Icon-only buttons */
+body.fi-panel-admin .fi-icon-btn {
+  border-radius: 0 !important;
+  border: 1px solid var(--nlm-border) !important;
+  background: var(--nlm-charcoal) !important;
+  transition: border-color .2s, color .2s !important;
+}
+body.fi-panel-admin .fi-icon-btn:hover {
+  border-color: var(--nlm-gold) !important;
+  background: var(--nlm-gold-dim) !important;
+}
+body.fi-panel-admin .fi-icon-btn svg { color: var(--nlm-dust) !important; }
+body.fi-panel-admin .fi-icon-btn:hover svg { color: var(--nlm-gold) !important; }
+
+/* Link buttons */
+body.fi-panel-admin .fi-btn-color-gray {
+  background: var(--nlm-charcoal) !important;
+  border-color: var(--nlm-border) !important;
+  color: var(--nlm-bone) !important;
+}
+
+/* ── FORM INPUTS ─────────────────────────────────────────── */
+body.fi-panel-admin label,
+body.fi-panel-admin .fi-fo-label label {
+  font-family: var(--nlm-mono) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+  margin-bottom: .3rem !important;
+}
+
+body.fi-panel-admin input[type="text"],
+body.fi-panel-admin input[type="email"],
+body.fi-panel-admin input[type="password"],
+body.fi-panel-admin input[type="url"],
+body.fi-panel-admin input[type="number"],
+body.fi-panel-admin textarea,
+body.fi-panel-admin .fi-input,
+body.fi-panel-admin .fi-input-wrp input,
+body.fi-panel-admin .fi-ta-text-input {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-mono) !important;
+  font-size: 13px !important;
+  letter-spacing: .04em !important;
+  box-shadow: none !important;
+  outline: none !important;
+  caret-color: var(--nlm-gold) !important;
+  transition: border-color .2s !important;
+}
+body.fi-panel-admin input:focus,
+body.fi-panel-admin textarea:focus,
+body.fi-panel-admin .fi-input:focus,
+body.fi-panel-admin .fi-input-wrp input:focus {
+  border-color: var(--nlm-gold) !important;
+  box-shadow: none !important;
+  ring: none !important;
+}
+body.fi-panel-admin input::placeholder,
+body.fi-panel-admin textarea::placeholder { color: var(--nlm-border) !important; opacity: 1 !important; }
+
+body.fi-panel-admin .fi-input-wrp {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* Select */
+body.fi-panel-admin .fi-slt-input {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-mono) !important;
+  font-size: 12px !important;
+  box-shadow: none !important;
+}
+body.fi-panel-admin .fi-slt-options {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 rgba(0,0,0,.5) !important;
+  backdrop-filter: none !important;
+}
+body.fi-panel-admin .fi-slt-option {
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-mono) !important;
+  font-size: 11px !important;
+  letter-spacing: .06em !important;
+  border-radius: 0 !important;
+}
+body.fi-panel-admin .fi-slt-option:hover,
+body.fi-panel-admin .fi-slt-option[aria-selected="true"] {
+  background: var(--nlm-gold-dim) !important;
+  color: var(--nlm-gold) !important;
+}
+
+/* Toggle */
+body.fi-panel-admin .fi-toggle-btn {
+  border-radius: 0 !important;
+  background: var(--nlm-border) !important;
+  border: 1px solid var(--nlm-border) !important;
+}
+body.fi-panel-admin .fi-toggle-btn[aria-checked="true"] {
+  background: var(--nlm-gold-dim) !important;
+  border-color: var(--nlm-gold) !important;
+}
+
+/* Checkbox */
+body.fi-panel-admin .fi-checkbox-input {
+  appearance: none !important;
+  width: 16px !important; height: 16px !important;
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  cursor: pointer !important;
+  accent-color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-checkbox-input:checked {
+  background: var(--nlm-gold-dim) !important;
+  border-color: var(--nlm-gold) !important;
+}
+
+/* Helper/error text */
+body.fi-panel-admin .fi-fo-helper-text p,
+body.fi-panel-admin .fi-fo-helper-text {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: .08em !important;
+  color: var(--nlm-dust) !important;
+}
+body.fi-panel-admin .fi-fo-field-wrp-error-message {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  color: #ff6b6b !important;
+  letter-spacing: .06em !important;
+}
+
+/* ── STATS WIDGETS ───────────────────────────────────────── */
+body.fi-panel-admin .fi-wi-stats-overview-stat {
+  background: var(--nlm-surface) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 0 0 2rem !important;
+  box-shadow: none !important;
+  position: relative !important;
+  overflow: hidden;
+  transition: border-color .2s !important;
+  animation: nlm-fade-up .4s ease both;
+}
+body.fi-panel-admin .fi-wi-stats-overview-stat::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--nlm-border);
+  transition: background .2s;
+}
+body.fi-panel-admin .fi-wi-stats-overview-stat:hover {
+  border-color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-wi-stats-overview-stat:hover::before {
+  background: var(--nlm-gold);
+}
+
+body.fi-panel-admin .fi-wi-stats-overview-stat-value {
+  font-family: var(--nlm-sans) !important;
+  font-size: clamp(1.6rem, 3vw, 2.25rem) !important;
+  font-weight: 900 !important;
+  letter-spacing: -.03em !important;
+  line-height: 1 !important;
+  color: var(--nlm-bone) !important;
+}
+body.fi-panel-admin .fi-wi-stats-overview-stat-label {
+  font-family: var(--nlm-mono) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+}
+body.fi-panel-admin .fi-wi-stats-overview-stat-description {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: .08em !important;
+  color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-wi-stats-overview-stat-content {
+  padding: 1.25rem !important;
+}
+
+/* ── BADGES ──────────────────────────────────────────────── */
+body.fi-panel-admin .fi-badge {
+  border-radius: 0 !important;
+  font-family: var(--nlm-mono) !important;
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  letter-spacing: .16em !important;
+  text-transform: uppercase !important;
+  box-shadow: none !important;
+}
+body.fi-panel-admin .fi-badge-color-primary,
+body.fi-panel-admin .fi-badge.fi-color-primary {
+  background: var(--nlm-gold-dim) !important;
+  color: var(--nlm-gold) !important;
+  border: 1px solid rgba(212,163,115,.3) !important;
+}
+body.fi-panel-admin .fi-badge-color-success,
+body.fi-panel-admin .fi-badge.fi-color-success {
+  background: rgba(34,197,94,.12) !important;
+  color: #4ade80 !important;
+  border: 1px solid rgba(34,197,94,.25) !important;
+}
+body.fi-panel-admin .fi-badge-color-danger,
+body.fi-panel-admin .fi-badge.fi-color-danger {
+  background: rgba(255,68,68,.12) !important;
+  color: #ff6b6b !important;
+  border: 1px solid rgba(255,68,68,.25) !important;
+}
+body.fi-panel-admin .fi-badge-color-warning,
+body.fi-panel-admin .fi-badge.fi-color-warning {
+  background: rgba(251,191,36,.12) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(251,191,36,.25) !important;
+}
+body.fi-panel-admin .fi-badge-color-gray,
+body.fi-panel-admin .fi-badge.fi-color-gray {
+  background: var(--nlm-charcoal) !important;
+  color: var(--nlm-dust) !important;
+  border: 1px solid var(--nlm-border) !important;
+}
+
+/* ── DROPDOWNS ───────────────────────────────────────────── */
+body.fi-panel-admin .fi-dropdown-panel {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  box-shadow: 4px 4px 0 rgba(0,0,0,.5) !important;
+  backdrop-filter: none !important;
+}
+body.fi-panel-admin .fi-dropdown-list-item {
+  border-radius: 0 !important;
+  transition: background .12s !important;
+}
+body.fi-panel-admin .fi-dropdown-list-item:hover {
+  background: var(--nlm-gold-dim) !important;
+}
+body.fi-panel-admin .fi-dropdown-list-item-label {
+  font-family: var(--nlm-mono) !important;
+  font-size: 11px !important;
+  letter-spacing: .1em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-bone) !important;
+}
+body.fi-panel-admin .fi-dropdown-list-item:hover .fi-dropdown-list-item-label {
+  color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-dropdown-header {
+  font-family: var(--nlm-mono) !important;
+  font-size: 9px !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+  background: rgba(0,0,0,.3) !important;
+}
+
+/* ── NOTIFICATIONS ───────────────────────────────────────── */
+body.fi-panel-admin .fi-no-notification {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  border-left: 3px solid var(--nlm-gold) !important;
+  box-shadow: none !important;
+}
+body.fi-panel-admin .fi-no-notification-success {
+  border-left-color: #4ade80 !important;
+}
+body.fi-panel-admin .fi-no-notification-danger {
+  border-left-color: #ff6b6b !important;
+}
+body.fi-panel-admin .fi-no-notification-title {
+  font-family: var(--nlm-mono) !important;
+  font-size: 11px !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-bone) !important;
+}
+body.fi-panel-admin .fi-no-notification-body {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  color: var(--nlm-dust) !important;
+  letter-spacing: .06em !important;
+}
+
+/* ── MODALS ──────────────────────────────────────────────── */
+body.fi-panel-admin .fi-modal-window {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 0 0 3rem !important;
+  box-shadow: 10px 10px 0 rgba(0,0,0,.5), 0 0 60px rgba(212,163,115,.06) !important;
+}
+body.fi-panel-admin .fi-modal-header {
+  background: var(--nlm-charcoal) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+}
+body.fi-panel-admin .fi-modal-heading {
+  font-family: var(--nlm-mono) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-modal-close-btn {
+  border-radius: 0 !important;
+  border: 1px solid var(--nlm-border) !important;
+  background: var(--nlm-surface) !important;
+  color: var(--nlm-dust) !important;
+  transition: border-color .2s, color .2s !important;
+}
+body.fi-panel-admin .fi-modal-close-btn:hover {
+  border-color: var(--nlm-gold) !important;
+  color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-modal-footer {
+  background: var(--nlm-charcoal) !important;
+  border-top: 1px solid var(--nlm-border) !important;
+}
+
+/* Overlay */
+body.fi-panel-admin .fi-modal-backdrop {
+  background: rgba(0,0,0,.7) !important;
+  backdrop-filter: blur(2px) !important;
+}
+
+/* ── USER MENU ───────────────────────────────────────────── */
+body.fi-panel-admin .fi-user-menu-trigger {
+  border-radius: 0 !important;
+  border: 1px solid var(--nlm-border) !important;
+  background: var(--nlm-surface) !important;
+  transition: border-color .2s !important;
+}
+body.fi-panel-admin .fi-user-menu-trigger:hover {
+  border-color: var(--nlm-gold) !important;
+  background: var(--nlm-gold-dim) !important;
+}
+body.fi-panel-admin .fi-user-avatar {
+  border-radius: 0 2px !important;
+}
+
+/* ── PAGINATION ──────────────────────────────────────────── */
+body.fi-panel-admin [aria-label*="pagination"] button,
+body.fi-panel-admin [aria-label*="Pagination"] button,
+body.fi-panel-admin nav button {
+  border-radius: 0 !important;
+  border: 1px solid var(--nlm-border) !important;
+  background: var(--nlm-charcoal) !important;
+  color: var(--nlm-bone) !important;
+  font-family: var(--nlm-mono) !important;
+  font-size: 11px !important;
+  transition: border-color .2s, color .2s !important;
+}
+body.fi-panel-admin nav button:hover,
+body.fi-panel-admin nav button[aria-current="page"] {
+  border-color: var(--nlm-gold) !important;
+  color: var(--nlm-gold) !important;
+  background: var(--nlm-gold-dim) !important;
+}
+
+/* ── TABS ────────────────────────────────────────────────── */
+body.fi-panel-admin .fi-tabs {
+  border-bottom: 1px solid var(--nlm-border) !important;
+  gap: 0 !important;
+}
+body.fi-panel-admin .fi-tabs-tab {
+  border-radius: 0 !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  background: transparent !important;
+  padding: .65rem 1.25rem !important;
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: .14em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+  transition: color .2s, border-color .2s !important;
+  position: relative;
+}
+body.fi-panel-admin .fi-tabs-tab:hover { color: var(--nlm-bone) !important; }
+body.fi-panel-admin .fi-tabs-tab-active,
+body.fi-panel-admin .fi-tabs-tab[aria-selected="true"] {
+  color: var(--nlm-gold) !important;
+  border-bottom-color: var(--nlm-gold) !important;
+  background: var(--nlm-gold-dim) !important;
+}
+
+/* ── CALLOUTS / ALERTS ───────────────────────────────────── */
+body.fi-panel-admin .fi-callout {
+  background: var(--nlm-surface) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  border-left: 3px solid var(--nlm-border) !important;
+  box-shadow: none !important;
+}
+body.fi-panel-admin .fi-callout-color-primary { border-left-color: var(--nlm-gold) !important; }
+body.fi-panel-admin .fi-callout-color-danger  { border-left-color: #ff6b6b !important; }
+body.fi-panel-admin .fi-callout-color-success { border-left-color: #4ade80 !important; }
+
+body.fi-panel-admin .fi-callout-heading {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: .18em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-callout-description {
+  font-family: var(--nlm-mono) !important;
+  font-size: 11px !important;
+  color: var(--nlm-dust) !important;
+  letter-spacing: .05em !important;
+}
+
+/* ── GLOBAL SEARCH ───────────────────────────────────────── */
+body.fi-panel-admin .fi-global-search-field {
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+body.fi-panel-admin .fi-global-search-field input {
+  font-family: var(--nlm-mono) !important;
+  font-size: 12px !important;
+  color: var(--nlm-bone) !important;
+  background: transparent !important;
+  caret-color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-global-search-field:focus-within {
+  border-color: var(--nlm-gold) !important;
+}
+body.fi-panel-admin .fi-global-search-result-group-header {
+  font-family: var(--nlm-mono) !important;
+  font-size: 9px !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+  background: rgba(0,0,0,.4) !important;
+}
+
+/* ── GENERAL TEXT OVERRIDES ──────────────────────────────── */
+body.fi-panel-admin p,
+body.fi-panel-admin span:not([class]),
+body.fi-panel-admin li { color: var(--nlm-bone);  }
+
+body.fi-panel-admin .text-gray-400,
+body.fi-panel-admin .text-gray-500,
+body.fi-panel-admin .dark\:text-gray-400 { color: var(--nlm-dust) !important; }
+
+body.fi-panel-admin .text-gray-700,
+body.fi-panel-admin .text-gray-800,
+body.fi-panel-admin .text-gray-900 { color: var(--nlm-bone) !important; }
+
+/* ── LOADING INDICATORS ──────────────────────────────────── */
+body.fi-panel-admin .fi-loading-indicator { color: var(--nlm-gold) !important; }
+body.fi-panel-admin [wire\:loading],
+body.fi-panel-admin [wire\:loading\.attr] { opacity: .5; }
+
+/* ── SCROLL + SKELETON ───────────────────────────────────── */
+body.fi-panel-admin ::-webkit-scrollbar { width: 6px; height: 6px; }
+body.fi-panel-admin ::-webkit-scrollbar-track { background: var(--nlm-bg); }
+body.fi-panel-admin ::-webkit-scrollbar-thumb { background: var(--nlm-border); border-radius: 0; }
+body.fi-panel-admin ::-webkit-scrollbar-thumb:hover { background: var(--nlm-dust); }
+
+/* ── DIVIDERS / HR ───────────────────────────────────────── */
+body.fi-panel-admin hr,
+body.fi-panel-admin .fi-divided > * + * { border-color: var(--nlm-border) !important; }
+
+/* ── KEY-VALUE / CODE BLOCKS ─────────────────────────────── */
+body.fi-panel-admin code,
+body.fi-panel-admin pre {
+  font-family: var(--nlm-mono) !important;
+  background: var(--nlm-charcoal) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  color: var(--nlm-gold) !important;
+  font-size: 12px !important;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+body.fi-panel-admin footer {
+  border-top: 1px solid var(--nlm-border) !important;
+  background: var(--nlm-charcoal) !important;
+}
+body.fi-panel-admin footer * {
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-dust) !important;
+}
+
+/* ── DATE PICKER ─────────────────────────────────────────── */
+body.fi-panel-admin .fi-fo-date-time-picker-calendar-header,
+body.fi-panel-admin .fi-fo-date-time-picker-panel-header {
+  background: var(--nlm-charcoal) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+  font-family: var(--nlm-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: .12em !important;
+  text-transform: uppercase !important;
+  color: var(--nlm-bone) !important;
+}
+
+/* ── REPEATER ────────────────────────────────────────────── */
+body.fi-panel-admin .fi-fo-repeater-item {
+  background: var(--nlm-surface) !important;
+  border: 1px solid var(--nlm-border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+body.fi-panel-admin .fi-fo-repeater-item-header {
+  background: var(--nlm-charcoal) !important;
+  border-bottom: 1px solid var(--nlm-border) !important;
+}
+
+/* ── KEY VALUE COMPONENT ─────────────────────────────────── */
+body.fi-panel-admin .fi-fo-key-value-row {
+  border-bottom: 1px solid var(--nlm-border) !important;
+}
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 1023px) {
+  body.fi-panel-admin .fi-sidebar {
+    background: var(--nlm-charcoal) !important;
+  }
+  #nlm-scanlines { display: none; }
+}
